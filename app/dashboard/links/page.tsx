@@ -1,7 +1,7 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
-import { AddLinkForm } from "./add-link-form.tsx";
+import { AddLinkForm } from "./add-link-form";
 import { deleteLink } from "@/lib/actions";
 import { EditLinkDialog } from "@/app/dashboard/links/edit-link-dialog";
 import { Button } from "@/components/ui/button";
