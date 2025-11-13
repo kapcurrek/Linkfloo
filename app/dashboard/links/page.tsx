@@ -5,6 +5,7 @@ import { AddLinkForm } from "./add-link-form";
 import { deleteLink } from "@/lib/actions";
 import { EditLinkDialog } from "@/app/dashboard/links/edit-link-dialog";
 import { Button } from "@/components/ui/button";
+import { DeleteLinkButton } from "./delete-link-button";
 
 export const dynamic = 'force-dynamic';
 
@@ -63,16 +64,9 @@ export default async function DashboardPage() {
                         profile.links.map((link) => (
                             <div key={link.id} className="p-4 border rounded-lg flex justify-between items-center">
                                 <EditLinkDialog link={link} />
-                                <form action={deleteLink}>
-                                    <input type="hidden" name="linkId" value={link.id} />
-                                    <Button
-                                        type="submit"
-                                        variant="destructive" // Użyjemy wariantu z shadcn
-                                        size="sm"
-                                    >
-                                        Usuń
-                                    </Button>
-                                </form>
+
+                                <DeleteLinkButton linkId={link.id} />
+
                                 <div>
                                     <h3 className="font-semibold">{link.title}</h3>
                                     <span
