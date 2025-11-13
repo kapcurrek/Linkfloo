@@ -1,13 +1,16 @@
-import { clerkMiddleware } from "@clerk/nextjs/server";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-export default clerkMiddleware({
-    publicRoutes: [
-        "/",
-        "/(?!sign-in|sign-up|dashboard|api)(.*)",
-        "/api/click",
-        "/sign-in(.*)",
-        "/sign-up(.*)"
-    ],
+const isProtectedRoute = createRouteMatcher([
+    "/dashboard(.*)",   // wszystko pod /dashboard
+    "/api/:path*",      // całe API
+]);
+
+export default clerkMiddleware(async (auth, req) => {
+    const pathname = req.nextUrl.pathname;
+
+    if (isProtectedRoute(req) && pathname !== "/api/click") {
+        await auth.protect();
+    }
 });
 
 export const config = {
