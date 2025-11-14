@@ -8,6 +8,7 @@ import { EditUsernameModal } from "@/app/dashboard/personalizuj/edit-username-mo
 import { EditAccentColorModal } from "@/app/dashboard/personalizuj/edit-accent-color-modal";
 import { EditAvatarModal } from "@/app/dashboard/personalizuj/edit-avatar-modal";
 import Image from "next/image";
+import DashboardHeader from "@/app/dashboard/dashboard-header";
 
 export const dynamic = 'force-dynamic';
 
@@ -25,21 +26,37 @@ export default async function PersonalizujPage() {
 
 
     return (
-        <div className="p-4 max-w-md mx-auto">
+        <div className="bg-neutral-950 text-white min-h-screen relative bg-black" style={{
+            background: "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(249, 115, 22, 0.25), transparent 70%), #000000",
+        }}>
 
-            <Button asChild variant="ghost" className="mb-4">
-                <Link href="/dashboard">{"<"} Wróć do dashboardu</Link>
-            </Button>
+            <DashboardHeader />
 
-            <h1 className="text-2xl font-bold mb-6">
+            <div className="gap-4 mb-8 m pr-10 pl-10 max-w-[1200px]">
+
+                <Button size="lg" className="
+                            p-0
+                            text-natural-100
+                            font-semibold
+                            bg-transparent
+                            hover:bg-transparent
+                            hover:cursor-pointer
+                            hover:scale-[1.08]
+                            hover:text-orange-400
+                            transition
+                            duration-200
+                            mb-6
+                            ">
+                    <Link href="/dashboard">{"<"} Wróć do dashboardu</Link>
+                </Button>
+
+            <h1 className="text-3xl font-bold mb-10">
                 Personalizuj swój profil
             </h1>
 
-
             <div className="flex flex-col gap-4">
 
-
-                <div className="flex justify-between items-center p-4 border rounded-lg">
+                <div className="flex justify-between items-center p-4 border rounded-lg backdrop-blur-xl bg-gradient-to-tl from-transparent via-transparent via-40% to-slate-100/6">
                     <div>
                         <p className="font-semibold">Nazwa profilu</p>
                         <p className="text-sm text-neutral-400">{profile.displayName}</p>
@@ -49,7 +66,7 @@ export default async function PersonalizujPage() {
                 </div>
 
 
-                <div className="flex justify-between items-center p-4 border rounded-lg">
+                <div className="flex justify-between items-center p-4 border rounded-lg backdrop-blur-xl bg-gradient-to-tl from-transparent via-transparent via-40% to-slate-100/6">
                     <div>
                         <p className="font-semibold">Nazwa użytkownika</p>
                         <p className="text-sm text-neutral-400">@{profile.username}</p>
@@ -59,7 +76,7 @@ export default async function PersonalizujPage() {
                 </div>
 
 
-                <div className="flex justify-between items-center p-4 border rounded-lg">
+                <div className="flex justify-between items-center p-4 border rounded-lg backdrop-blur-xl bg-gradient-to-tl from-transparent via-transparent via-40% to-slate-100/6">
                     <div>
                         <p className="font-semibold">Kolor akcentu</p>
                         <div className="flex items-center gap-2">
@@ -74,7 +91,7 @@ export default async function PersonalizujPage() {
                     <EditAccentColorModal currentAccentColor={profile.accentColor || ''} />
                 </div>
 
-                <div className="flex justify-between items-center p-4 border rounded-lg">
+                <div className="flex justify-between items-center p-4 border rounded-lg backdrop-blur-xl bg-gradient-to-tl from-transparent via-transparent via-40% to-slate-100/6">
                     <div>
                         <p className="font-semibold">Avatar</p>
                         <div className="w-16 h-16 rounded-full bg-neutral-700 mt-2 overflow-hidden relative">
@@ -91,7 +108,7 @@ export default async function PersonalizujPage() {
 
                     <EditAvatarModal currentAvatar={profile.avatarUrl} />
                 </div>
-
+                </div>
             </div>
         </div>
     );

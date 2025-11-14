@@ -34,11 +34,15 @@ export function EditAccentColorModal({ currentAccentColor }: { currentAccentColo
                 <Button variant="outline" size="sm">Edytuj</Button>
             </DialogTrigger>
 
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[500px]
+             bg-black/80
+             backdrop-blur-lg
+             bg-gradient-to-br from-black via-black/40 via-60% to-slate-100/6
+             ">
                 <DialogHeader>
                     <DialogTitle>Zmień kolor akcentu</DialogTitle>
-                    <DialogDescription>
-                        Wybierz kolor. Zostaw puste (kliknij "Wyczyść"), by użyć domyślnego.
+                    <DialogDescription className="text-neutral-300 font-light">
+                        Wybierz kolor, który będzie używany jako akcent na Twoim publicznym profilu. Kliknij "Zapisz", gdy skończysz. "Resetuj" przywróci obecny kolor.
                     </DialogDescription>
                 </DialogHeader>
 
@@ -58,12 +62,34 @@ export function EditAccentColorModal({ currentAccentColor }: { currentAccentColo
                     <DialogFooter className="mt-4">
                         <Button
                             type="button"
-                            variant="ghost"
                             onClick={() => setPickedColor(currentAccentColor || "")}
+                            className="
+                            text-natural-100
+                            font-semibold
+                            bg-transparent
+                            hover:bg-transparent
+                            hover:cursor-pointer
+                            hover:scale-[1.08]
+                            hover:text-orange-400
+                            transition
+                            duration-200
+                        "
                         >
                             Resetuj
                         </Button>
-                        <Button type="submit">Zapisz</Button>
+                        <Button type="submit" className="
+                        text-natural-100
+                        font-semibold
+                        border
+                        border-orange-400/40
+                        bg-orange-400/50
+                        hover:cursor-pointer
+                        hover:bg-orange-400/80
+                        hover:scale-[1.02]
+                        transition
+                        duration-200
+                        "
+                        >Zapisz</Button>
                     </DialogFooter>
                 </form>
             </DialogContent>

@@ -27,18 +27,26 @@ export function TrackedLinkButton({ link, accentColor }: { link: Link, accentCol
         <button
             onClick={handleTrackedClick}
             className="
-        block w-full p-4 rounded-lg text-center font-semibold
-
-        bg-white/10
-        backdrop-blur-lg
-        border border-white/10
-
-        text-white
-        hover:bg-[--accent-color]
-        transition-colors
-        hover:cursor-pointer
-      "
-            style={{ '--accent-color': accentColor } as React.CSSProperties}
+            p-4
+            rounded-lg
+            flex
+            items-center
+            justify-center
+            gap-4
+            border-1
+            border-white/20
+            backdrop-filter
+            backdrop-blur
+            bg-gradient-to-tl from-transparent via-transparent via-50% to-neutral-200/12
+            hover:bg-gradient-to-tl hover:from-transparent hover:via-transparent hover:via-0% hover:to-neutral-200/30
+            cursor-pointer
+            hover:scale-[1.09]
+            transform
+            transition
+            duration-200
+            text-lg
+            font-semibold
+            "
         >
             {link.title}
         </button>

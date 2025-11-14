@@ -53,10 +53,14 @@ export function EditAvatarModal({ currentAvatar }: { currentAvatar: string | nul
                 <Button variant="outline" size="sm">Zmień Avatar</Button>
             </DialogTrigger>
 
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[500px]
+             bg-black/80
+             backdrop-blur-lg
+             bg-gradient-to-br from-black via-black/40 via-60% to-slate-100/6
+             ">
                 <DialogHeader>
                     <DialogTitle>Zmień swój avatar</DialogTitle>
-                    <DialogDescription>
+                    <DialogDescription className="text-neutral-300 font-light">
                         Wybierz plik obrazka (PNG, JPG, WEBP, AVIF, GIF - max 2MB).
                     </DialogDescription>
                 </DialogHeader>
@@ -83,17 +87,41 @@ export function EditAvatarModal({ currentAvatar }: { currentAvatar: string | nul
                     )}
 
                     <DialogFooter>
-                        <Button type="submit">Prześlij i Zapisz</Button>
+                        <Button type="submit" className="
+                        text-natural-100
+                        font-semibold
+                        border
+                        border-orange-400/40
+                        bg-orange-400/50
+                        hover:cursor-pointer
+                        hover:bg-orange-400/80
+                        hover:scale-[1.02]
+                        transition
+                        duration-200
+                        "
+                        >Prześlij i zapisz</Button>
                     </DialogFooter>
 
                     <DialogFooter className="border-t pt-4 mt-2 ">
                         <Button
                             type="button"
-                            variant="destructive"
-                            className="w-full"
-
                             disabled={!currentAvatar}
-                            onClick={deleteActionWrapper}>
+                            onClick={deleteActionWrapper}
+                            className="
+                            text-natural-100
+                            font-semibold
+                            border
+                            border-red-300/40
+                            bg-red-600/50
+                            hover:cursor-pointer
+                            hover:bg-red-600/80
+                            hover:scale-[1.02]
+                            transition
+                            duration-200
+                            w-full
+                            "
+                        >
+
                             Usuń obecny avatar
                         </Button>
                     </DialogFooter>

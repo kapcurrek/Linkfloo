@@ -31,29 +31,45 @@ export function SortableLinkItem({ link, index }: { link: Link, index: number })
         <div
             ref={setNodeRef}
             style={style}
-            className="p-4 bg-neutral-800 border border-neutral-700 rounded-lg flex items-center gap-4"
-        >
+            className="
+            p-4
+            rounded-lg
+            flex
+            items-center
+            gap-4
+            border-1
+            border-orange-300/20
+            bg-clip-padding
+            backdrop-filter
+            backdrop-blur
+            bg-opacity-10
+            backdrop-saturate-100
+            backdrop-contrast-125
+            bg-gradient-to-tl from-transparent via-transparent via-40% to-orange-400/15
+            ">
+
+
             <button {...attributes} {...listeners} className="p-1 cursor-grab active:cursor-grabbing">
-                <GripVertical className="w-5 h-5 text-neutral-400" />
+                <GripVertical className="w-5 h-5 text-neutral-400/80" />
             </button>
 
-            <span className="text-sm text-neutral-500 w-4 text-right">
+            <span className=" text-neutral-100 w-4 text-right border-r-2 border-neutral-200/60 pr-7">
                 {index + 1}
             </span>
 
             <div className="flex-grow">
                 <h3 className="font-semibold">{link.title}</h3>
-                <a href={link.url} target="_blank" rel="noopener noreferrer" className="text-sm text-neutral-400 hover:underline">
+                <a href={link.url} target="_blank" rel="noopener noreferrer" className="text-sm text-neutral-400 hover:underline font-light">
                     {link.url}
                 </a>
             </div>
 
             <div className="flex flex-col items-center px-2">
                 <span className="text-lg font-bold">{link._count.clicks}</span>
-                <span className="text-xs text-neutral-500">KLIKNIĘĆ</span>
+                <span className="text-xs text-neutral-400">KLIKNIĘĆ</span>
             </div>
 
-            <div className="flex">
+            <div className="flex items-center gap-2">
                 <EditLinkDialog link={link} />
                 <DeleteLinkButton linkId={link.id} />
             </div>

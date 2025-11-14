@@ -5,6 +5,8 @@ import { AddLinkForm } from "./add-link-form";
 import { Button } from "@/components/ui/button";
 import { LinksList } from "./links-list";
 import Link from "next/link";
+import DashboardHeader from "../dashboard-header";
+import {LogOut} from "lucide-react";
 
 export const dynamic = 'force-dynamic'; // Always use dynamic rendering for this page and not cache it
 
@@ -45,24 +47,50 @@ export default async function LinksPage() {
     });
 
     return (
-        <div className="p-4 md:p-8 max-w-4xl mx-auto">
+        <div className="bg-neutral-950 text-white min-h-screen relative bg-black" style={{
+            background: "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(249, 115, 22, 0.25), transparent 70%), #000000",
+        }}>
+            <DashboardHeader />
 
-            <Button asChild variant="ghost" className="mb-4">
-                <Link href="/dashboard">{"<"} Wróć do dashboardu</Link>
-            </Button>
+                    <main className=" gap-4 mb-8 m pr-10 pl-10 max-w-[1200px]">
+
+                        <Button size="lg" className="
+                            p-0
+                            text-natural-100
+                            font-semibold
+                            bg-transparent
+                            hover:bg-transparent
+                            hover:cursor-pointer
+                            hover:scale-[1.08]
+                            hover:text-orange-400
+                            transition
+                            duration-200
+                            mb-6
+                            ">
+                            <Link href="/dashboard">{"<"} Wróć do dashboardu</Link>
+                        </Button>
 
 
-            <header className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold">
-                    Zarządzaj linkami
-                </h1>
+                        <div className="flex justify-between items-end mb-12">
+                            <div className="mb-">
+                                <h1 className="text-3xl font-bold">
+                                    Zarządzaj swoimi linkami
+                                </h1>
 
-                <AddLinkForm />
-            </header>
+                                <p className="mt-4 font-extralight text-sm leading-5 block text-justify max-w-[400px]">
+                                    Witaj w centrum zarządzania linkami! Tutaj możesz dodawać, edytować i usuwać swoje linki, a także zmieniać ich kolejność wyświetlania na Twojej stronie profilowej.
+                                </p>
+                            </div>
+
+                            <AddLinkForm />
+                        </div>
 
 
-            <LinksList initialLinks={profile.links} />
+                        <LinksList initialLinks={profile.links} />
+                    </main>
+
         </div>
-    );
 
+
+    );
 }

@@ -31,10 +31,11 @@ export function EditDisplayNameModal({ currentName }: { currentName: string }) {
                 <Button variant="outline" size="sm">Edytuj</Button>
             </DialogTrigger>
 
-
-            {/* POPUP CONTENT */}
-
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[500px]
+             bg-black/80
+             backdrop-blur-lg
+             bg-gradient-to-br from-black via-black/40 via-60% to-slate-100/6
+             ">
                 <DialogHeader>
                     <DialogTitle>Zmień nazwę</DialogTitle>
                 </DialogHeader>
@@ -53,7 +54,20 @@ export function EditDisplayNameModal({ currentName }: { currentName: string }) {
                         />
                     </div>
                     <DialogFooter>
-                        <Button type="submit">Zapisz</Button>
+                        <Button type="submit"
+                                className="
+                        text-natural-100
+                        font-semibold
+                        border
+                        border-orange-400/40
+                        bg-orange-400/50
+                        hover:cursor-pointer
+                        hover:bg-orange-400/80
+                        hover:scale-[1.02]
+                        transition
+                        duration-200
+                        "
+                        >Zapisz</Button>
                     </DialogFooter>
                 </form>
             </DialogContent>
