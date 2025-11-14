@@ -1,20 +1,24 @@
+import prisma from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import prisma from "@/lib/prisma";
 import { AddLinkForm } from "./add-link-form";
-import { deleteLink } from "@/lib/actions";
-import { EditLinkDialog } from "@/app/dashboard/links/edit-link-dialog";
 import { Button } from "@/components/ui/button";
-import { DeleteLinkButton } from "./delete-link-button";
+import { LinksList } from "./links-list";
+import Link from "next/link";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = 'force-dynamic'; // Always use dynamic rendering for this page and not cache it
 
-export default async function DashboardPage() {
-    const user = await currentUser();
+// LINKS MANAGEMENT PAGE COMPONENT
+// Renders the main dashboard page for managing user links and its order
+
+export default async function LinksPage() {
+    const user = await currentUser(); // Get the currently logged-in user from Clerk
+
     if (!user) {
         redirect('/sign-in');
     }
 
+    // Fetch or create the user's profile in the database
     const profile = await prisma.profile.upsert({
         where: {id: user.id},
         update: {
@@ -29,10 +33,10 @@ export default async function DashboardPage() {
         include: {
             links: {
                 orderBy: {
-                    createdAt: 'desc',
+                    order: 'asc',
                 },
                 include: {
-                    _count: {
+                    _count: { // This is click count for each link
                         select: { clicks: true }
                     }
                 }
@@ -41,55 +45,23 @@ export default async function DashboardPage() {
     });
 
     return (
-        <div className="p-8 max-w-4xl mx-auto">
-            <h1 className="text-2xl font-bold">
-                Cześć, {profile.displayName}!
-            </h1>
-            <p className="mt-2 text-neutral-400">
-                Zarządzaj swoimi linkami.
-            </p>
+        <div className="p-4 md:p-8 max-w-4xl mx-auto">
 
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+            <Button asChild variant="ghost" className="mb-4">
+                <Link href="/dashboard">{"<"} Wróć do dashboardu</Link>
+            </Button>
 
-                <div>
-                    <AddLinkForm profileId={profile.id} />
-                </div>
 
-                <div className="flex flex-col gap-4">
-                    <h2 className="text-xl font-semibold">Twoje linki</h2>
+            <header className="flex justify-between items-center mb-6">
+                <h1 className="text-2xl font-bold">
+                    Zarządzaj linkami
+                </h1>
 
-                    {profile.links.length === 0 ? (
-                        <p className="text-neutral-500">Nie masz jeszcze żadnych linków.</p>
-                    ) : (
-                        profile.links.map((link) => (
-                            <div key={link.id} className="p-4 border rounded-lg flex justify-between items-center">
-                                <EditLinkDialog link={link} />
+                <AddLinkForm />
+            </header>
 
-                                <DeleteLinkButton linkId={link.id} />
 
-                                <div>
-                                    <h3 className="font-semibold">{link.title}</h3>
-                                    <span
-                                        className="text-xs font-medium px-2 py-0.5 rounded-full bg-blue-600 text-white"
-                                        title="Liczba kliknięć"
-                                    >
-                                      {link._count.clicks}
-                                    </span>
-                                    <a
-                                        href={link.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-sm text-neutral-400 hover:underline"
-                                    >
-                                        {link.url}
-                                    </a>
-                                </div>
-                            </div>
-                        ))
-                    )}
-                </div>
-
-            </div>
+            <LinksList initialLinks={profile.links} />
         </div>
     );
 

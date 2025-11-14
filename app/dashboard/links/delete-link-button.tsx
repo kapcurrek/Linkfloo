@@ -2,36 +2,30 @@
 
 import { deleteLink } from "@/lib/actions";
 import { Button } from "@/components/ui/button";
+import { Trash2 } from "lucide-react";
 
+// TRASH BUTTON FOR DELETING A LINK
 export function DeleteLinkButton({ linkId }: { linkId: number }) {
 
     const actionWrapper = async (formData: FormData) => {
+        const confirmed = confirm("Na pewno chcesz usunąć ten link?"); // Confirm deletion
+        if (!confirmed) return;
 
-        // LINK DELETE CONFIRMATION DIALOG
-        const confirmed = confirm("Na pewno chcesz usunąć ten link? Tej akcji nie można cofnąć.");
+        const result = await deleteLink(formData); // Call the deleteLink action and wait for the result message or error
+        if (result?.error) alert(result.error);
+    };
 
-        if (!confirmed) {
-            return; // user changed their mind and cancelled the deletion
-        }
-
-        const result = await deleteLink(formData);
-
-        if (result?.error) {
-            alert(result.error); // if error occurred, show alert
-        }
-
-    }
-
-    return(
+    return (
         <form action={actionWrapper}>
             <input type="hidden" name="linkId" value={linkId} />
             <Button
                 type="submit"
-                variant="destructive"
-                size="sm"
+                variant="outline"
+                size="icon"
+                className="text-red-500 hover:text-red-400"
             >
-                Usuń
+                <Trash2 className="w-4 h-4" />
             </Button>
         </form>
-    )
+    );
 }

@@ -12,7 +12,7 @@ async function getProfile(username: string) {
         include: {
             links: {
                 orderBy: {
-                    createdAt: 'desc',
+                    order: 'asc',
                 }
             }
         }

@@ -4,6 +4,9 @@
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { auth } from "@clerk/nextjs/server";
+import { put, del } from "@vercel/blob";
+import sharp from "sharp";
+import { Buffer } from "buffer";
 
 // NAME UPDATE ACTION
 export async function updateDisplayName(formData: FormData) {
@@ -109,6 +112,122 @@ export async function updateAccentColor(formData: FormData) {
 
         return { message: "Kolor została zaktualizowany." };
     } catch (error) {
+        return { error: "Coś poszło nie tak." };
+    }
+}
+
+
+// AVATAR UPDATE ACTION
+
+export async function updateAvatar(formData: FormData) {
+
+    const { userId: loggedInUserId } = await auth();
+    if (!loggedInUserId) return { error: "Użytkownik niezalogowany" };
+
+    const file = formData.get("avatar") as File; // get the uploaded file from the formdata
+
+    // FILE VALIDATIONS
+    if (!file) return { error: "Nie wybrano pliku." };
+    if (file.size > 10 * 1024 * 1024) { // 2MB limit
+        return { error: "Plik jest za duży (max 2MB)." };
+    }
+    if (!file.type.startsWith("image/")) {
+        return { error: "Niepoprawny typ pliku (dozwolone tylko obrazki)." };
+    }
+
+    try {
+
+        // Get current profile to delete old avatar if exists
+        const profile = await prisma.profile.findUnique({
+            where: { id: loggedInUserId },
+            select: { avatarUrl: true, username: true }
+        });
+
+        if (!profile) return { error: "Nie znaleziono profilu." };
+
+        // Process the image using sharp to convert it to webp format and compress to save space
+        const fileBuffer = Buffer.from(await file.arrayBuffer());
+        const processedBuffer = await sharp(fileBuffer)
+            .resize({ width: 800 })
+            .webp({ quality: 80 })
+            .toBuffer();
+
+        const fileName = "avatar.webp";
+        const filePath = `avatars/${loggedInUserId}/${fileName}`;
+
+        const blob = await put(
+            filePath,
+            processedBuffer, // here we use the processed webp buffer file
+            {
+                access: 'public',
+                contentType: 'image/webp',
+                allowOverwrite: true,
+                addRandomSuffix: true
+            }
+        );
+
+        await prisma.profile.update({
+            where: { id: loggedInUserId },
+            data: {
+                avatarUrl: blob.url,
+            },
+        });
+
+        if (profile.avatarUrl) {
+            await del(profile.avatarUrl);  // delete old avatar from storage by downloaded before updating old URL
+        }
+
+        revalidatePath("/dashboard/personalizuj");
+        revalidatePath("/dashboard");
+
+        if (profile) revalidatePath(`/${profile.username}`);
+
+        return { message: "Avatar zaktualizowany.", newAvatarUrl: blob.url };
+
+    } catch (error) {
+        console.error("Błąd przy uploadzie avatara:", error);
+        return { error: `Coś poszło nie tak podczas wysyłania pliku: ${error}` };
+    }
+}
+
+// AVATAR DELETE ACTION
+
+export async function deleteAvatar() {
+
+    const { userId: loggedInUserId } = await auth();
+    if (!loggedInUserId) return { error: "Użytkownik niezalogowany" };
+
+    try {
+
+        const profile = await prisma.profile.findUnique({
+            where: { id: loggedInUserId },
+            select: { avatarUrl: true, username: true }
+        });
+
+        if (!profile) return { error: "Nie znaleziono profilu." };
+
+
+        if (profile.avatarUrl) {
+            await del(profile.avatarUrl);
+        }
+
+
+        await prisma.profile.update({
+            where: { id: loggedInUserId },
+            data: {
+                avatarUrl: null,
+            },
+        });
+
+
+        revalidatePath("/dashboard/personalizuj");
+        revalidatePath("/dashboard");
+        if (profile) revalidatePath(`/${profile.username}`);
+
+        return { message: "Avatar usunięty." };
+
+    } catch (error) {
+        console.error("Błąd przy usuwaniu avatara:", error);
         return { error: "Coś poszło nie tak." };
     }
 }

@@ -24,11 +24,18 @@ export async function createLink(formData: FormData) {
 
     // Insert new link into the database
     try {
+
+        // this small block is to count existing links for the user
+        const linkCount = await prisma.link.count({
+            where: { profileId: UserId },
+        });
+
         await prisma.link.create({
             data: {
                 title: title,
                 url: url,
                 profileId: UserId,
+                order: linkCount,
             },
         });
 
@@ -131,3 +138,47 @@ export async function updateLink(formData: FormData) {
     }
 }
 
+
+// UPDATE LINKS ORDER ACTION
+export async function updateLinkOrder(linkIds: number[]) { // Przyjmujemy tablicę numerów
+
+    const { userId: loggedInUserId } = await auth();
+    if (!loggedInUserId) return { error: "Użytkownik nie jest zalogowany" };
+
+    try {
+        const links = await prisma.link.findMany({
+            where: {
+                profileId: loggedInUserId,
+                id: { in: linkIds }  // We only fetch links that belong to the logged-in user
+            },
+            select: { id: true } // Only fetch the IDs, for efficiency
+        });
+
+        if (links.length !== linkIds.length) {
+            return { error: "Błąd bezpieczeństwa: Wykryto nieprawidłowe linki." }; // we found a mismatch, more links were requested than owned by user
+        }
+
+        await prisma.$transaction(
+            linkIds.map((linkId, index) =>
+                prisma.link.update({
+                    where: {
+                        id: linkId,
+                    },
+                    data: {
+                        order: index,
+                    },
+                })
+            )
+        );
+
+        // We need to revalidate the user's profile page to reflect the new order
+        const profile = await prisma.profile.findUnique({ where: { id: loggedInUserId } });
+        if (profile) revalidatePath(`/${profile.username}`);
+
+        return { message: "Kolejność zaktualizowana." };
+
+    } catch (error) {
+        console.error("Błąd przy aktualizacji kolejności:", error);
+        return { error: "Coś poszło nie tak." };
+    }
+}
