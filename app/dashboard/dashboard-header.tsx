@@ -14,17 +14,14 @@ export default async function DashboardHeader() {
 
     const displayName = user.firstName || "Użytkownik";
     const username = user.username || "Brak nazwy";
+    const defaultAvatar = 'https://zszww9q15dfion7m.public.blob.vercel-storage.com/avatars/default-avatar.png';
 
-    let avatarUrl  = await prisma.profile.findUnique({
+    const profile  = await prisma.profile.findUnique({
         where: { id: user.id,},
-        select: { avatarUrl: true,},
+        select: { avatarUrl: true },
     });
 
-    if (!avatarUrl) {
-        avatarUrl = {
-            avatarUrl: 'https://zszww9q15dfion7m.public.blob.vercel-storage.com/avatars/default-avatar.png',
-        };
-    };
+    const finalAvatarUrl = profile?.avatarUrl || defaultAvatar;
 
     return(
         <header className="backdrop backdrop-blur-lg ">
@@ -45,7 +42,7 @@ export default async function DashboardHeader() {
             <div className="flex items-center justify-between gap-4 mb-10 p-6 border-b-1 w-full">
                 <div className="flex items-center gap-4">
                     <Image
-                    src={avatarUrl.avatarUrl}
+                    src={finalAvatarUrl}
                     width={300}
                     height={300}
                     alt="Your profile picture"

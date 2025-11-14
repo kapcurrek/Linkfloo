@@ -5,6 +5,7 @@ import { TrackedLinkButton } from "./TrackedLinkButton";
 
 
 async function getProfile(username: string) {
+
     const profile = await prisma.profile.findUnique({
         where: {
             username: username,
@@ -33,6 +34,9 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
     const profile = await getProfile(resolvedParams.username);
     const accentColor = profile.accentColor || '#333333';
 
+    const defaultAvatar = 'https://zszww9q15dfion7m.public.blob.vercel-storage.com/avatars/default-avatar.png';
+    const finalAvatarUrl = profile.avatarUrl || defaultAvatar;
+
     return (
 
 
@@ -43,7 +47,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
 
                 <div className="w-full max-w-[700px] pt-6">
                     <div className="flex flex-col items-center gap-4">
-                            <Image src={profile.avatarUrl} alt="Profile Picture" width={120} height={120}
+                            <Image src={finalAvatarUrl} alt="Profile Picture" width={120} height={120}
                             className="rounded-full shadow-2xl" />
 
                             <div className="text-center mb-8">

@@ -1,7 +1,12 @@
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
 
-export default function DashboardButtonItem(buttonProps) {
+interface DashboardButtonProps {
+    name: string;
+    addr: string;
+}
+
+export default function DashboardButtonItem(buttonProps: DashboardButtonProps) {
     const { name, addr } = buttonProps; // Destructuring props: 'name' - is label for button, 'addr' - is link address
     return(
         <Button asChild className="
