@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, DialogClose,} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Pencil } from "lucide-react";
 
 
 // EDIT LINK DIALOG COMPONENT
@@ -20,7 +21,7 @@ export function EditLinkDialog({ link }: { link: Link }) {
     // This function wraps the updateLink action to check for success or error messages
     async function actionWrapper(formData: FormData) {
 
-        const result = await updateLink(formData);
+        const result = await updateLink(formData); // We await the result of the updateLink action (error or success message)
 
         if (result?.message) {
             setIsOpen(false); // This will close the modal on success
@@ -35,7 +36,9 @@ export function EditLinkDialog({ link }: { link: Link }) {
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
 
             <DialogTrigger asChild>
-                <Button variant="outline" size="sm">Edytuj</Button>
+                <Button variant="outline" size="sm">
+                    <Pencil className="w-4 h-4" />
+                </Button>
             </DialogTrigger>
 
 
