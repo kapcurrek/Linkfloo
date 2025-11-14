@@ -32,8 +32,19 @@ export function AddLinkForm() {
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
 
             <DialogTrigger asChild>
-                <Button>
-                    <Plus className="w-4 h-4 mr-2" />
+                <Button className="
+                    text-natural-100
+                    font-semibold
+                    border
+                    border-orange-600/30
+                    bg-orange-400/50
+                    hover:cursor-pointer
+                    hover:bg-orange-400/80
+                    hover:scale-[1.02]
+                    transition
+                    duration-200
+                    ">
+                    <Plus className="w-4 h-4" />
                     Dodaj link
                 </Button>
             </DialogTrigger>

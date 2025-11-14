@@ -20,10 +20,8 @@ export function DeleteLinkButton({ linkId }: { linkId: number }) {
             <input type="hidden" name="linkId" value={linkId} />
             <Button
                 type="submit"
-                variant="outline"
                 size="icon"
-                className="text-red-500 hover:text-red-400"
-            >
+                className="text-red-500 hover:text-red-400 bg-red-600/20 border-red-300/20 border-1 hover:bg-red-600/50 cursor-pointer">
                 <Trash2 className="w-4 h-4" />
             </Button>
         </form>

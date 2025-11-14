@@ -36,17 +36,23 @@ export function EditLinkDialog({ link }: { link: Link }) {
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
 
             <DialogTrigger asChild>
-                <Button variant="outline" size="sm">
-                    <Pencil className="w-4 h-4" />
+                <Button
+                    variant="outline"
+                    size="icon" >
+                    <Pencil  />
                 </Button>
             </DialogTrigger>
 
 
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[500px]
+             bg-black/80
+             backdrop-blur-lg
+             bg-gradient-to-br from-black via-black/40 via-60% to-slate-100/6
+             ">
 
                 <DialogHeader>
                     <DialogTitle>Edytuj link</DialogTitle>
-                    <DialogDescription>
+                    <DialogDescription className="text-neutral-300 font-light">
                         Zmień szczegóły swojego linku. Kliknij "Zapisz", gdy skończysz.
                     </DialogDescription>
                 </DialogHeader>
@@ -56,7 +62,7 @@ export function EditLinkDialog({ link }: { link: Link }) {
                     <input type="hidden" name="linkId" value={link.id} />
 
                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="title" className="text-right">
+                        <Label htmlFor="title" className="text-left">
                             Tytuł
                         </Label>
                         <Input
@@ -84,10 +90,31 @@ export function EditLinkDialog({ link }: { link: Link }) {
                     <DialogFooter>
 
                       <DialogClose asChild>
-                        <Button type="button" variant="ghost">Anuluj</Button>
+                        <Button type="button" className="
+                            text-natural-100
+                            font-semibold
+                            bg-transparent
+                            hover:bg-transparent
+                            hover:cursor-pointer
+                            hover:scale-[1.08]
+                            hover:text-orange-400
+                            transition
+                            duration-200
+                        ">Anuluj</Button>
                       </DialogClose>
 
-                        <Button type="submit">Zapisz zmiany</Button>
+                        <Button type="submit" className="
+                        text-natural-100
+                        font-semibold
+                        border
+                        border-orange-400/40
+                        bg-orange-400/50
+                        hover:cursor-pointer
+                        hover:bg-orange-400/80
+                        hover:scale-[1.02]
+                        transition
+                        duration-200
+                        ">Zapisz zmiany</Button>
 
                     </DialogFooter>
                 </form>
