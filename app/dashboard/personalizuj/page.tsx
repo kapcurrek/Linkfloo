@@ -6,6 +6,8 @@ import Link from "next/link";
 import { EditDisplayNameModal } from "./edit-display-name-modal";
 import { EditUsernameModal } from "@/app/dashboard/personalizuj/edit-username-modal";
 import { EditAccentColorModal } from "@/app/dashboard/personalizuj/edit-accent-color-modal";
+import { EditAvatarModal } from "@/app/dashboard/personalizuj/edit-avatar-modal";
+import Image from "next/image";
 
 export const dynamic = 'force-dynamic';
 
@@ -70,6 +72,24 @@ export default async function PersonalizujPage() {
                     </div>
 
                     <EditAccentColorModal currentAccentColor={profile.accentColor || ''} />
+                </div>
+
+                <div className="flex justify-between items-center p-4 border rounded-lg">
+                    <div>
+                        <p className="font-semibold">Avatar</p>
+                        <div className="w-16 h-16 rounded-full bg-neutral-700 mt-2 overflow-hidden relative">
+                            {profile.avatarUrl && (
+                                <Image
+                                    src={profile.avatarUrl}
+                                    alt="Avatar"
+                                    fill
+                                    className="object-cover"
+                                />
+                            )}
+                        </div>
+                    </div>
+
+                    <EditAvatarModal currentAvatar={profile.avatarUrl} />
                 </div>
 
             </div>
